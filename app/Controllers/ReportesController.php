@@ -60,12 +60,12 @@ class ReportesController
             aliados_merkas_sucursales.aliado_merkas_sucursal_principal,
             aliados_merkas_sucursales.aliado_merkas_sucursal_direccion,
             municipios.municipio_nombre,
-            sum(aliados_merkas_factura.aliado_merkas_factura_puntos_repartidos) as puntos
+            sum(aliados_merkas_facturas.aliado_merkas_factura_puntos_repartidos) as puntos
             ")->leftjoin("aliados_merkas_sucursales" , "aliados_merkas_sucursales.aliado_merkas_id" , "=" , "aliados_merkas.aliado_merkas_id")
             ->leftjoin("aliados_merkas_facturas"  , "aliados_merkas_facturas.aliado_merkas_sucursal_id", "=" , "aliados_merkas_sucursales.aliado_merkas_sucursal_id" )
             ->leftjoin("municipios" , "municipios.municipio_id" , "=" , "aliados_merkas_sucursales.municipio_id" )
-            ->whereBetween('aliados_merkas_facturas.aliado_merkas_factura_fecha_registro' ,[CustomRequestHandler::getParam($request , "valor1") , CustomRequestHandler::getParam($request , "valor2")])
             ->where('aliados_merkas_facturas.aliado_merkas_factura_estado' , '=' , '1')
+            ->whereBetween('aliados_merkas_facturas.aliado_merkas_factura_fecha_registro' ,[CustomRequestHandler::getParam($request , "valor1") , CustomRequestHandler::getParam($request , "valor2")])
             ->get();
 
             $this->customResponse->is200Response($response , $getFindByEmpresaPuntos);
