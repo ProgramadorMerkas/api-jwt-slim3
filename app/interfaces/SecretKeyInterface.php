@@ -1,5 +1,5 @@
 <?php
-namespace App\Interfaces;
+namespace App\interfaces;
 
 
 interface SecretKeyInterface

@@ -1,5 +1,5 @@
 
-/app/Interfaces/SecretKeyInteface.php
+/app/interfaces/SecretKeyInteface.php
 
 /config/.env.php
 

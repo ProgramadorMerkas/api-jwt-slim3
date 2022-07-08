@@ -5,7 +5,7 @@ namespace App\Controllers;
 
 
 
-use App\Interfaces\SecretKeyInterface;
+use App\interfaces\SecretKeyInterface;
 use \Firebase\JWT\JWT;
 
 class GenerateTokenController implements SecretKeyInterface
