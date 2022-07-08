@@ -71,6 +71,13 @@ class ReportesController
 
             $this->customResponse->is200Response($response , $getFindByEmpresaPuntos);
     }
+
+    public function getAll(Request $request , Response $response)
+    {
+        $getAll = $this->aliadoMerkas->get();
+
+        $this->customResponse->is200Response($response , $getAll);
+    }
 }
 
 ?>
