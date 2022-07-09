@@ -3,8 +3,8 @@
 
 namespace App\Controllers;
 
-use App\Models\User;
-use App\Controllers\RolesController;
+use App\Models\Usuarios;
+//use App\Controllers\RolesController;
 use App\Requests\CustomRequestHandler;
 use App\Response\CustomResponse;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -25,15 +25,15 @@ class AuthController
     {
         $this->customResponse = new CustomResponse();
 
-        $this->user = new User();
+        $this->user = new Usuarios();
 
         $this->validator = new Validator();
 
-        $this->rol = new RolesController();
+        //$this->rol = new RolesController();
     }
 
     ##validat token despues de loguin pero con mail
-    public function Validate(Request $request , Response $response , $jwt)
+    /*public function Validate(Request $request , Response $response , $jwt)
     {
         $getDecodeJWT = GenerateTokenController::decodeToken($jwt["jwt"]);
 
@@ -47,9 +47,9 @@ class AuthController
 
        return $this->customResponse->is200ResponseLogin($response,$responseMessage , $getUsuario , $getMenu);
    
-    }
+    }*/
     //ENDPOTIN POST Registrar uusuario
-    public function Register(Request $request,Response $response)
+    /*public function Register(Request $request,Response $response)
     {
         $this->validator->validate($request,[
             "user"=>v::notEmpty(),
@@ -81,16 +81,16 @@ class AuthController
 
         $this->customResponse->is200Response($response,$responseMessage);
 
-    }
+    } */
 
 //function para encriptar contraseña
-    public  function hashPassword($password)
+  /*  public  function hashPassword($password)
   {
     return password_hash($password,PASSWORD_DEFAULT);
-  }
+  }*/
 //validar si existe un correo
 
-    public function EmailExist($email)
+   /* public function EmailExist($email)
     {
     $count =  $this->user->where(["email"=>$email])->count();
 
@@ -99,7 +99,7 @@ class AuthController
         return false;
     }
     return true;
-    }
+    } */
 //ENDP POINT POST -> login generación de toke, menu y datos de usuario
 
     public function Login(Request $request, Response $response)
@@ -112,10 +112,12 @@ class AuthController
        if($this->validator->failed())
        {
            $responseMessage = $this->validator->errors;
+
            return $this->customResponse->is400Response($response,$responseMessage);
        }
+       //asigna email a variable $email
        $email = CustomRequestHandler::getParam($request,"email");
-
+       //verificar credenciales 
        $verifyAccount = $this->verifyAccount(CustomRequestHandler::getParam($request,"password"), $email);
 
        if($verifyAccount==false)
@@ -128,6 +130,7 @@ class AuthController
        
        #validacion para ver si el cliente se encuentra activo
        if($verifyActive==false){
+
            $responseMessage = "usuario inactivo";
 
            return $this->customResponse->is400Response($response , $responseMessage);
@@ -136,26 +139,27 @@ class AuthController
        #enviar información usuario
        $getUsuario = $this->getUsuario($email);
        #recuperar menu del logueado
-       $getMenu = $this->getMenu($email);
+       //$getMenu = $this->getMenu($email);
        #generación de token
        $responseMessage = GenerateTokenController::generateToken($email);
-       return $this->customResponse->is200ResponseLogin($response,$responseMessage , $getUsuario , $getMenu);
+
+       return $this->customResponse->is200ResponseLogin($response,$responseMessage , $getUsuario);
     }
 
     #function informacion del usuario
     public function getUsuario($email)
     {
-        $usuario = $this->user->selectRaw('id, user,marca,active,email,url_img,role,created_at,updated_at, id_empresa')
-                                ->where(["email"=>$email])->get();
+        $usuario = $this->user->selectRaw('usuario_id, usuario_nombre_completo,usuario_fecha_registro,usuario_estado,usuario_correo,usuario_ruta_img,usuario_rol_principal')
+                                ->where(["usuario_correo"=>$email])->get();
         return $usuario;
     }
     #function menu del cliente por correo
-    public function getMenu($email)
+    /**public function getMenu($email)
     {
       $menu = $this->rol->findSidebarByRol($email);
 
       return $menu;
-    }
+    } */
 
 
     #validar si el usuario se encuetra activo
@@ -163,11 +167,11 @@ class AuthController
 
         $active = "";
 
-        $user = $this->user->where(["email"=>$email])->get();
+        $user = $this->user->where(["usuario_correo"=>$email])->get();
 
         foreach($user as $key)
         {
-            $active = $key->active;
+            $active = $key->usuario_estado;
         }
         if($active==0)
         {
@@ -181,30 +185,42 @@ class AuthController
     public function verifyAccount($password,$email)
     {
         $hashPassword ="";
-        
-        $count = $this->user->where(["email"=>$email])->count();
-
+        //valida si existe el correo
+        $count = $this->user->where(["usuario_correo"=>$email])->count();
+        //encuentra error retorna false //salta error en sus credenciales
         if($count==false)
         {
             return false;
         }
-
-        $user = $this->user->where(["email"=>$email])->get();
-
+        //trae información del cliente 
+        $user = $this->user->where(["usuario_correo"=>$email])->get();
+        //asigna el resultado de la contraseña a $hashpassword
         foreach ($user as $users)
         {
-            $hashPassword = $users->password;
+            $hashPassword = $users->usuario_contrasena;
              
         }
-
-        $verify = password_verify($password,$hashPassword);
-
+        //validación de la contraseña
+        $verify = $this->equals_password($password,$hashPassword);
+        //retorna false para que salte error en credenciales
         if($verify==false)
         {
             return false;
         }
 
         return true;
+    }
+
+    //validar si es igual la contraseña
+    public function equals_password($password , $hashPassword)
+    {
+        if(md5($password) == $hashPassword)
+        {
+            return true;
+        }else{
+            return false;
+        }
+
     }
 
 }

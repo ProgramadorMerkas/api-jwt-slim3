@@ -13,13 +13,12 @@ class CustomResponse
             ->withStatus(200);
     }
 
-    public function is200ResponseLogin($response , $responseMessage , $usuario , $menu)
+    public function is200ResponseLogin($response , $responseMessage , $usuario)
     {
         $responseMessage = json_encode(
             ["success" => true,
             "response" => $responseMessage,
-            "usuario"  => $usuario,
-            "menu"     => $menu,
+            "usuario"  => $usuario 
         ]
         );
         $response->getBody()->write($responseMessage);
