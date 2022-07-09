@@ -5,17 +5,17 @@ namespace App\Controllers;
 
 
 
-use App\interfaces\SecretKeyInterface;
+//use App\interfaces\SecretKeyInterface;
 use \Firebase\JWT\JWT;
 
-class GenerateTokenController implements SecretKeyInterface
+class GenerateTokenController //implements SecretKeyInterface
 {
 
     public static function generateToken($email)
     {
         $now = time();
         $future = strtotime('+1 hour',$now);
-        $secret = SecretKeyInterface::JWT_SECRET_KEY;
+        $secret = JWT_SECRET_KEY;
 
         $payload = [
           "jti"=>$email,
@@ -28,7 +28,7 @@ class GenerateTokenController implements SecretKeyInterface
 
     public static function decodeToken($token)
     {
-      $secret = SecretKeyInterface::JWT_SECRET_KEY;
+      $secret = JWT_SECRET_KEY;
       return JWT::decode($token , $secret , array("HS256"));
     }
 }
