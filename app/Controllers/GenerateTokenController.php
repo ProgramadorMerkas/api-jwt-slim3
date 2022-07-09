@@ -28,7 +28,7 @@ class GenerateTokenController implements SecretKeyInterface
 
     public static function decodeToken($token)
     {
-      $secret = JWT_SECRET_KEY;
+      $secret = SecretKeyInterface::JWT_SECRET_KEY;
       return JWT::decode($token , $secret , array("HS256"));
     }
 }
