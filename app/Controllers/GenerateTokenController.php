@@ -15,7 +15,7 @@ class GenerateTokenController implements SecretKeyInterface
     {
         $now = time();
         $future = strtotime('+1 hour',$now);
-        $secret = JWT_SECRET_KEY;
+        $secret = SecretKeyInterface::JWT_SECRET_KEY;
 
         $payload = [
           "jti"=>$email,
