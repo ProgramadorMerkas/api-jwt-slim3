@@ -50,7 +50,7 @@ $container["notAllowedHandler"] = function ($container)
                 array(
                     "success"=>false,
                     "error"=>"NOT_ALLOWED",
-                    "message"=>"esta solicitud no está permitida en esta ruta". implode(',' , $methods),
+                    "message"=>"esta solicitud no está permitida en esta ruta: ". implode(',' , $methods),
                     "status_code"=>"405",
                 ),
                 JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT

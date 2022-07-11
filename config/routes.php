@@ -1,5 +1,6 @@
 <?php
- 
+
+$app->post("/create-guest","GuestEntryController:createGuest");
  
 
 $app->group("/auth",function() use ($app){

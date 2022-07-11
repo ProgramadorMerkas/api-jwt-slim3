@@ -1,12 +1,11 @@
-<?php
-//use App\interfaces\SecretKeyInterface as Secret;
+<?php 
 
 
 return function ($app)
 {
     $app->add(new Tuupola\Middleware\JwtAuthentication([
         "ignore"=>["/auth/login"],
-        "secret"=> "82ed81b9bbd2099ced94fcdc2a6a62ec46d2694b",
+        "secret"=> JWT_SECRET_KEY,
         "error"=>function ($response,$arguments)
         {
             $data["success"]= false;
