@@ -6,7 +6,7 @@ return function ($app)
 {
     $app->add(new Tuupola\Middleware\JwtAuthentication([
         "ignore"=>["/auth/login"],
-        "secret"=> JWT_SECRET_KEY,
+        "secret"=> "82ed81b9bbd2099ced94fcdc2a6a62ec46d2694b",
         "error"=>function ($response,$arguments)
         {
             $data["success"]= false;
