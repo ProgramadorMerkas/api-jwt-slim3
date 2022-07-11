@@ -15,7 +15,7 @@ class GenerateTokenController //implements SecretKeyInterface
     {
         $now = time();
         $future = strtotime('+1 hour',$now);
-        $secret = JWT_SECRET_KEY;
+        $secret = "82ed81b9bbd2099ced94fcdc2a6a62ec46d2694b";
 
         $payload = [
           "jti"=>$email,
@@ -28,7 +28,7 @@ class GenerateTokenController //implements SecretKeyInterface
 
     public static function decodeToken($token)
     {
-      $secret = JWT_SECRET_KEY;
+      $secret = "82ed81b9bbd2099ced94fcdc2a6a62ec46d2694b";
       return JWT::decode($token , $secret , array("HS256"));
     }
 }
