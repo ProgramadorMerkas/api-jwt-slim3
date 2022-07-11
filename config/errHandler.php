@@ -21,7 +21,7 @@ $container["errorHandler"] = function ($container)
 
 $container["notFoundHandler"] = function ($container)
 {
-    return function ($request,$response,$exception) use ($container)
+    return function ($request,$response) use ($container)
     {
         return $response->withStatus(404)
             ->withHeader('Content-Type','application/json')
@@ -41,15 +41,16 @@ $container["notFoundHandler"] = function ($container)
 
 $container["notAllowedHandler"] = function ($container)
 {
-    return function ($request,$response,$exception) use ($container)
+    return function ($request,$response,$methods) use ($container)
     {
         return $response->withStatus(405)
+            ->withHeader('Allow' , implode(',', $methods))
             ->withHeader('Content-Type','application/json')
             ->write(json_encode(
                 array(
                     "success"=>false,
                     "error"=>"NOT_ALLOWED",
-                    "message"=>"esta solicitud no está permitida en esta ruta",
+                    "message"=>"esta solicitud no está permitida en esta ruta". implode(',' , $methods),
                     "status_code"=>"405",
                 ),
                 JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT
