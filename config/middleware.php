@@ -1,11 +1,18 @@
 <?php 
 
+use Monolog\Logger;
+use Monolog\Handler\RotatingFileHandler;
+
+$logger = new Logger("slim");
+$rotating = new RotatingFileHandler(__DIR__ . "/logs/slim.log", 0, Logger::DEBUG);
+$logger->pushHandler($rotating);
 
 return function ($app)
 {
     $app->add(new Tuupola\Middleware\JwtAuthentication([
         "ignore"=>["/auth/login"],
         "secret"=> JWT_SECRET_KEY,
+        "logger"=> $logger,
         "error"=>function ($response,$arguments)
         {
             $data["success"]= false;
