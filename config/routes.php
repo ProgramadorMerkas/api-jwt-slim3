@@ -1,6 +1,6 @@
 <?php
 
-$app->post("/create-guest","GuestEntryController:createGuest");
+#$app->post("/create-guest","GuestEntryController:createGuest");
  
 
 $app->group("/auth",function() use ($app){
@@ -12,10 +12,7 @@ $app->group("/auth",function() use ($app){
 
 $app->group("/reportes" , function() use ($app){
     $app->post("/puntosxempresa" , "ReportesController:findByEmpresasPuntos");
-});
-
-$app->group("/aliados_merkas" , function() use ($app){
-    $app->get("/all" , "ReportesController:getAll");
+    $app->post("/puntosrepartidos" , "ReportesController:puntosRepartidos");
 });
  
  
