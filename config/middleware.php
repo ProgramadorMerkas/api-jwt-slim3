@@ -10,7 +10,7 @@ $logger->pushHandler($rotating);
 return function ($app)
 {
     $app->add(new Tuupola\Middleware\JwtAuthentication([
-        "ignore"=>["/auth/login"],
+        "ignore"=>["/auth/login" , "/reportes/puntosxempresa"],
         "secret"=> JWT_SECRET_KEY,
         "logger"=> $logger,
         "error"=>function ($response,$arguments)
