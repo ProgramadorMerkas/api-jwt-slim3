@@ -69,7 +69,7 @@ class ReportesController
             municipios.municipio_nombre,
             departamentos.departamento_nombre,
             sum(aliados_merkas_facturas.aliado_merkas_factura_puntos_repartidos) as puntos,
-            sum(aliados_mekras_facturas.aliado_merkas_factura_total_con_iva) as valorpagado
+            sum(aliados_merkas_facturas.aliado_merkas_factura_total_con_iva) as valorpagado
             ")->leftjoin("aliados_merkas_sucursales" , "aliados_merkas_sucursales.aliado_merkas_id" , "=" , "aliados_merkas.aliado_merkas_id")
             ->leftjoin("aliados_merkas_facturas"  , "aliados_merkas_facturas.aliado_merkas_sucursal_id", "=" , "aliados_merkas_sucursales.aliado_merkas_sucursal_id" )
             ->leftjoin("municipios" , "municipios.municipio_id" , "=" , "aliados_merkas_sucursales.municipio_id" )
