@@ -32,6 +32,8 @@ class ReportesController
         $this->validator = new Validator();
     }
 
+    #POST PUNTOS REPARTIDOS
+    #ID, NIT, ALIADO, DIRECCION, MUNICIPIO, DEPARTAMENTO, VALOR REGISTRADO, PORCENTAJE DE NEGOCIACIÓN, FECHA O PERIODO.
     public function findByEmpresasPuntos(Request $request , Response $response)
     {
         $this->validator->validate($request , [
@@ -48,7 +50,7 @@ class ReportesController
         }
 
         $getFindByEmpresaPuntos = $this->aliadoMerkas->selectRaw(
-            "aliados_merkas.aliado_merkas_id ,
+            "aliados_merkas.aliado_merkas_id,
             aliados_merkas.aliado_merkas_nit,
             aliados_merkas.aliado_merkas_dv,
             aliados_merkas.aliado_merkas_estado,
@@ -62,11 +64,15 @@ class ReportesController
             aliados_merkas.aliado_merkas_rep_legal_telefono,
             aliados_merkas_sucursales.aliado_merkas_sucursal_principal,
             aliados_merkas_sucursales.aliado_merkas_sucursal_direccion,
+            aliados_merkas.aliado_merkas_rango_credito,
+            aliados_merkas.aliado_merkas_rango_efectivo,
             municipios.municipio_nombre,
+            departamentos.departamento_nombre,
             sum(aliados_merkas_facturas.aliado_merkas_factura_puntos_repartidos) as puntos
             ")->leftjoin("aliados_merkas_sucursales" , "aliados_merkas_sucursales.aliado_merkas_id" , "=" , "aliados_merkas.aliado_merkas_id")
             ->leftjoin("aliados_merkas_facturas"  , "aliados_merkas_facturas.aliado_merkas_sucursal_id", "=" , "aliados_merkas_sucursales.aliado_merkas_sucursal_id" )
             ->leftjoin("municipios" , "municipios.municipio_id" , "=" , "aliados_merkas_sucursales.municipio_id" )
+            ->leftjoin("departamentos" , "departamentos.departamento_id" , "=" , "municipios.departamento_id")
             ->where('aliados_merkas_facturas.aliado_merkas_factura_estado' , '=' , '1')
             ->whereBetween('aliados_merkas_facturas.aliado_merkas_factura_fecha_registro' ,[CustomRequestHandler::getParam($request , "valor1") , CustomRequestHandler::getParam($request , "valor2")])
             ->groupBy("aliados_merkas_facturas.aliado_merkas_sucursal_id")
@@ -82,8 +88,7 @@ class ReportesController
         $this->customResponse->is200Response($response , $getAll);
     }
 
-    #POST PUNTOS REPARTIDOS
-    #ID, NIT, ALIADO, DIRECCION, MUNICIPIO, DEPARTAMENTO, VALOR REGISTRADO, PORCENTAJE DE NEGOCIACIÓN, FECHA O PERIODO.
+    
     public function puntosRepartidos(Request $request , Response $response)
     {
         $this->validator->validate($request , [
