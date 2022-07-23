@@ -82,6 +82,8 @@ class ReportesController
         $this->customResponse->is200Response($response , $getAll);
     }
 
+    #POST PUNTOS REPARTIDOS
+    #ID, NIT, ALIADO, DIRECCION, MUNICIPIO, DEPARTAMENTO, VALOR REGISTRADO, PORCENTAJE DE NEGOCIACIÓN, FECHA O PERIODO.
     public function puntosRepartidos(Request $request , Response $response)
     {
         $this->validator->validate($request , [
@@ -112,6 +114,8 @@ class ReportesController
                     aliados_merkas.aliado_merkas_rep_legal_apellido,
                     aliados_merkas.aliado_merkas_rep_legal_numero_documento,
                     aliados_merkas.aliado_merkas_rep_legal_correo,
+                    aliados_merkas.aliado_merkas_rango_credito,
+                    aliados_merkas.aliado_merkas_rango_efectivo,
                     municipios.municipio_nombre
                         ")->leftjoin("aliados_merkas_sucursales" ,"aliados_merkas_sucursales.aliado_merkas_sucursal_id" ,"=" ,"aliados_merkas_facturas.aliado_merkas_sucursal_id")
                         ->leftjoin("aliados_merkas" , "aliados_merkas.aliado_merkas_id" , "=" , "aliados_merkas_sucursales.aliado_merkas_id")
