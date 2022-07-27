@@ -27,79 +27,9 @@ class AuthController
 
         $this->user = new Usuarios();
 
-        $this->validator = new Validator();
-
-        //$this->rol = new RolesController();
+        $this->validator = new Validator(); 
     }
-
-    ##validat token despues de loguin pero con mail
-    /*public function Validate(Request $request , Response $response , $jwt)
-    {
-        $getDecodeJWT = GenerateTokenController::decodeToken($jwt["jwt"]);
-
-        $responseMessage = $jwt["jwt"];
-
-        #enviar información usuario
-       $getUsuario = $this->getUsuario($getDecodeJWT->jti);
-
-       #recuperar menu del logueado
-       $getMenu = $this->getMenu($getDecodeJWT->jti);
-
-       return $this->customResponse->is200ResponseLogin($response,$responseMessage , $getUsuario , $getMenu);
-   
-    }*/
-    //ENDPOTIN POST Registrar uusuario
-    /*public function Register(Request $request,Response $response)
-    {
-        $this->validator->validate($request,[
-            "user"=>v::notEmpty(),
-            "email"=>v::notEmpty()->email(),
-            "password"=>v::notEmpty()
-        ]);
-
-        if($this->validator->failed())
-        {
-            $responseMessage = $this->validator->errors;
-            return $this->customResponse->is400Response($response,$responseMessage);
-        }
-
-        if($this->EmailExist(CustomRequestHandler::getParam($request,"email")) )
-        {
-            $responseMessage = "el email ya se encuentra registrado";
-            return $this->customResponse->is400Response($response,$responseMessage);
-        }
-
-        $passwordHash = $this->hashPassword(CustomRequestHandler::getParam($request,"password"));
-
-        $this->user->create([
-           "user"=>CustomRequestHandler::getParam($request,"user"),
-            "email"=>CustomRequestHandler::getParam($request,"email"),
-            "password"=>$passwordHash
-        ]);
-
-        $responseMessage ="usuario creado";
-
-        $this->customResponse->is200Response($response,$responseMessage);
-
-    } */
-
-//function para encriptar contraseña
-  /*  public  function hashPassword($password)
-  {
-    return password_hash($password,PASSWORD_DEFAULT);
-  }*/
-//validar si existe un correo
-
-   /* public function EmailExist($email)
-    {
-    $count =  $this->user->where(["email"=>$email])->count();
-
-    if($count==0)
-    {
-        return false;
-    }
-    return true;
-    } */
+ 
 //ENDP POINT POST -> login generación de toke, menu y datos de usuario
 
     public function Login(Request $request, Response $response)
