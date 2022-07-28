@@ -3,8 +3,7 @@
 
 namespace App\Controllers;
 
-use App\Models\Usuarios;
-//use App\Controllers\RolesController;
+use App\Models\Usuarios; 
 use App\Requests\CustomRequestHandler;
 use App\Response\CustomResponse;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -29,6 +28,18 @@ class AuthController
 
         $this->validator = new Validator(); 
     }
+
+//ENDPOINT GET -> validar jwt
+public function Validate(Request $request , Response $response , $jwt)
+{   
+    $getDecodeJwt = GenerateTokenController::decodeToken($jwt["jwt"]);
+
+    $responseMessage = $jwt["jwt"];
+
+    $getUsuario = $this->getUsuario($getDecodeJwt->jti);
+
+    $this->customResponse->is200ResponseLogin($response , $responseMessage , $getUsuario);
+}
  
 //ENDP POINT POST -> login generación de toke, menu y datos de usuario
 
