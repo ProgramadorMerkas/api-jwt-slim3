@@ -90,7 +90,7 @@ class ReportesController
     }
 
     
-    public function findByUsuariosPuntos(Request $request , Response $response)
+    public function findByUsuariosPuntosRepartidos(Request $request , Response $response)
     {
         $this->validator->validate($request , [
             "valor1" => v::notEmpty(),
@@ -104,9 +104,10 @@ class ReportesController
             return $this->customeResponse->is400Response($response , $responseMenssage);
         }
 
-        #select aliados_merkas_factura.aliado_merkas_factura_id,
-             /*   aliados_merkas_factura.usuario_id,
-                aliados_merkas_factura.aliado_merkas_sucursal_id,
+        /*select 
+                aliados_merkas_facturas.aliado_merkas_factura_id,
+                aliados_merkas_facturas.usuario_id,
+                aliados_merkas_facturas.aliado_merkas_sucursal_id,
                 aliados_merkas.aliado_merkas_rango_efectivo,
                 aliados_merkas.aliado_merkas_rango_credito,
                 aliados_merkas.aliado_merkas_nit,
@@ -114,18 +115,60 @@ class ReportesController
                 aliados_merkas_sucursales.aliado_merkas_sucursal_direccion,
                 departamentos.departamento_nombre,
                 municipios.municipio_nombre,
-                aliados_merkas_factura.aliado_merkas_fecha_registro,
-                aliados_merkas_factura.aliado_merkas_factura_numero,
-                aliados_merkas_factura.aliado_merkas_factura_pago_efectivo,
-                aliados_merkas_factura.aliado_merkas_factura_pago_tarjeta,
-                aliados_merkas_factura.aliado_merkas_factura_puntos_repartidos
-                FROM aliados_merkas_factura
+                aliados_merkas_facturas.aliado_merkas_factura_fecha_registro,
+                aliados_merkas_facturas.aliado_merkas_factura_numero,
+                aliados_merkas_facturas.aliado_merkas_factura_pago_efectivo,
+                aliados_merkas_facturas.aliado_merkas_factura_pago_tarjeta,
+                aliados_merkas_facturas.aliado_merkas_factura_puntos_repartidos,
+                usuarios.usuario_codigo,
+                usuarios.usuario_fecha_registro,
+                usuarios.usuario_rol_principal,
+                usuarios.usuario_nombre_completo,
+                usuarios.usuario_correo,
+                usuarios.usuario_telefono,
+                usuarios.usuario_puntos,
+                usuarios.usuario_merkash
+                FROM aliados_merkas_facturas
                 INNER JOIN aliados_merkas_sucursales on aliados_merkas_sucursales.aliado_merkas_sucursal_id = aliados_merkas_facturas.aliado_merkas_sucursal_id
-                INNER JOIN aliados_merkas on aliados_merkas.aliado_merkas_id = aliados_merkas_sucursales.aliado_merkas_id*/
+                INNER JOIN aliados_merkas on aliados_merkas.aliado_merkas_id = aliados_merkas_sucursales.aliado_merkas_id
+                INNER JOIN municipios on municipios.municipio_id = aliados_merkas_sucursales.municipio_id
+                INNER JOIN departamentos on departamentos.departamento_id = municipios.departamento_id
+                INNER JOIN usuarios on usuarios.usuario_id = aliados_merkas_facturas.usuario_id
+                WHERE aliados_merkas_facturas.aliado_merkas_factura_estado = 1
+                AND aliados_merkas_facturas.aliado_merkas_factura_fecha_registro BETWEEN '2022-07-01' AND '2022-07-28'
+                */
                 
-
-
-        $getPuntosRepartidos = $this->aliadosMerkasFacturas->get();
+        $getPuntosRepartidos = $this->aliadosMerkasFacturas->selectRaw("aliados_merkas_facturas.aliado_merkas_factura_id,
+        aliados_merkas_facturas.usuario_id,
+        aliados_merkas_facturas.aliado_merkas_sucursal_id,
+        aliados_merkas.aliado_merkas_rango_efectivo,
+        aliados_merkas.aliado_merkas_rango_credito,
+        aliados_merkas.aliado_merkas_nit,
+        aliados_merkas.aliado_merkas_nombre,
+        aliados_merkas_sucursales.aliado_merkas_sucursal_direccion,
+        departamentos.departamento_nombre,
+        municipios.municipio_nombre,
+        aliados_merkas_facturas.aliado_merkas_factura_fecha_registro,
+        aliados_merkas_facturas.aliado_merkas_factura_numero,
+        aliados_merkas_facturas.aliado_merkas_factura_pago_efectivo,
+        aliados_merkas_facturas.aliado_merkas_factura_pago_tarjeta,
+        aliados_merkas_facturas.aliado_merkas_factura_puntos_repartidos,
+        usuarios.usuario_codigo,
+        usuarios.usuario_fecha_registro,
+        usuarios.usuario_rol_principal,
+        usuarios.usuario_nombre_completo,
+        usuarios.usuario_correo,
+        usuarios.usuario_telefono,
+        usuarios.usuario_puntos,
+        usuarios.usuario_merkash")
+        ->join("aliados_merkas_sucursales" , "aliados_merkas_sucursales.aliado_merkas_sucursal_id", "=", "aliados_merkas_facturas.aliado_merkas_sucursal_id")
+        ->join("aliados_merkas" , "aliados_merkas.aliado_merkas_id" , "=" , "aliados_merkas_sucursales.aliado_merkas_id")
+        ->join("municipios" , "municipios.municipio_id" ,  "=" , "aliados_merkas_sucursales.municipio_id")
+        ->join("departamentos" , "departamentos.departamento_id", "=", "municipios.departamento_id")
+        ->join("usuarios" , "usuarios.usuario_id" , "=" , "aliados_merkas_facturas.usuario_id")
+        ->where("aliados_merkas_facturas.aliado_merkas_factura_estado" , "=" , "1")
+        ->whereBetween('aliados_merkas_facturas.aliado_merkas_factura_fecha_registro' ,[CustomRequestHandler::getParam($request , "valor1") , CustomRequestHandler::getParam($request , "valor2")])
+        ->get();
 
         $this->customResponse->is200Response($response , $getPuntosRepartidos);
     }

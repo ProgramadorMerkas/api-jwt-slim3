@@ -13,7 +13,7 @@ $app->group("/auth",function() use ($app){
 $app->group("/reportes" , function() use ($app){
     $app->post("/puntosxempresa" , "ReportesController:findByEmpresasPuntos");
     //$app->post("/puntosrepartidos" , "ReportesController:puntosRepartidos");
-    $app->post("/puntosxusuario" , "ReportesController:findByUsuariosPuntos");
+    $app->post("/puntosxusuario" , "ReportesController:findByUsuariosPuntosRepartidos");
 });
  
  
