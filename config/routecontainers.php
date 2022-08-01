@@ -15,6 +15,11 @@ return function($container)
     {
       return new \App\Controllers\ReportesController;
     };
+
+    $container["UsuariosController"] = function()
+    {
+      return new \App\Controllers\UsuariosController;
+    };
      
 
 };

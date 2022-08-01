@@ -172,6 +172,8 @@ class ReportesController
 
         $this->customResponse->is200Response($response , $getPuntosRepartidos);
     }
+
+     
 }
 
 ?>
