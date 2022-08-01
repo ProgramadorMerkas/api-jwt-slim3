@@ -37,7 +37,7 @@ class UsuariosController
     {
         $getUsuarios = $this->usuario->get();
 
-        $this->customResponse($response , $getUsuarios);
+        $this->customResponse->is200Response($response , $getUsuarios);
     }
 }
 
