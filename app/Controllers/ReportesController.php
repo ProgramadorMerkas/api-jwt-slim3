@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\AliadosMerkas;
 use App\Models\AliadosMerkasFacturas;
+use App\Models\Usuarios;
 use App\Requests\CustomRequestHandler;
 use App\Response\CustomResponse;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -21,6 +22,8 @@ class ReportesController
 
     protected $validator;
 
+    protected $Usuarios;
+
     public function __construct()
     {
         $this->customResponse = new CustomResponse();
@@ -28,6 +31,8 @@ class ReportesController
         $this->aliadoMerkas = new AliadosMerkas();
 
         $this->aliadosMerkasFacturas = new AliadosMerkasFacturas();
+
+        $this->usuario = new Usuarios();
 
         $this->validator = new Validator();
     }
@@ -171,6 +176,52 @@ class ReportesController
         ->get();
 
         $this->customResponse->is200Response($response , $getPuntosRepartidos);
+    }
+    /**
+     * SELECT 
+     * usuarios.usuario_id, 
+     * usuarios.usuario_codigo, 
+     * usuarios.usuario_nombre_completo, 
+     * usuarios.usuario_fecha_registro,
+     * usuarios.usuario_rol_principal,
+     * usuarios.usuario_correo,
+     * usuarios.usuario_telefono,
+     * usuarios.usuario_estado,
+     * usuarios.usuario_puntos,
+     * usuarios.usuario_merkash,
+     * usuarios.usuario_terminos,
+     * usuarios.usuario_ruta_img,
+     * padre.usuario_id  as padre_id, 
+     * padre.usuario_nombre_completo as padre_nombre,
+     * padre.usuario_telefono as padre_telefono,
+     * padre.usuario_puntos as padre_puntos,
+     * padre.usuario_merkash as padre_merkash
+     *  from usuarios
+     *      LEFT join usuarios as padre on usuarios.usuario_id_padre = padre.usuario_id
+     */
+    public function referidos(Request $request , Response $response)
+    {
+        $getReferidos  = $this->usuario->selectRaw(
+            "usuarios.usuario_id, 
+            usuarios.usuario_codigo, 
+            usuarios.usuario_nombre_completo, 
+            usuarios.usuario_fecha_registro,
+            usuarios.usuario_rol_principal,
+            usuarios.usuario_correo,
+            usuarios.usuario_telefono,
+            usuarios.usuario_estado,
+            usuarios.usuario_puntos,
+            usuarios.usuario_merkash,
+            usuarios.usuario_terminos,
+            usuarios.usuario_ruta_img,
+            padre.usuario_id  as padre_id, 
+            padre.usuario_nombre_completo as padre_nombre,
+            padre.usuario_telefono as padre_telefono,
+            padre.usuario_puntos as padre_puntos,
+            padre.usuario_merkash as padre_merkash"
+        )->leftjoin("usuarios as padre" , "padre.usuario_id" , "=" , "usuarios.usuario_id_padre")->get();
+
+        $this->customResponse->is200Response($response , $getReferidos);
     }
 
      

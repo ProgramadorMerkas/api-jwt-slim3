@@ -14,6 +14,8 @@ $app->group("/reportes" , function() use ($app){
     $app->post("/puntosxempresa" , "ReportesController:findByEmpresasPuntos");
     //$app->post("/puntosrepartidos" , "ReportesController:puntosRepartidos");
     $app->post("/puntosxusuario" , "ReportesController:findByUsuariosPuntosRepartidos");
+
+    $app->get("/referidos" , "ReportesController:referidos");
 });
 
 $app->group("/usuarios" , function() use ($app){
