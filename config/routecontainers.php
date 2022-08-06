@@ -20,6 +20,10 @@ return function($container)
     {
       return new \App\Controllers\UsuariosController;
     };
-     
+    
+    $container["FacturasController"] = function()
+    {
+      return new \App\Controllers\FacturasController;
+    };
 
 };

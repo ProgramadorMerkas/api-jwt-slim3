@@ -20,6 +20,11 @@ $app->group("/reportes" , function() use ($app){
 
 $app->group("/usuarios" , function() use ($app){
     $app->get("/list" , "UsuariosController:list");
+    $app->get("/abueloPadreHijoFindById/{id}" , "UsuariosController:abueloPadreHijoFindById");
+});
+
+$app->group("/facturas" , function() use ($app){
+    $app->get("/findById/{id}" , "FacturasController:findById");
 });
  
  
