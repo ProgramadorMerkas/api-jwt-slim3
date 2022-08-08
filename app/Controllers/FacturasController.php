@@ -99,7 +99,7 @@ class FacturasController
 							aliados_merkas_facturas.aliado_merkas_factura_puntos_repartidos,
 							aliados_merkas_facturas.aliado_merkas_factura_pago_efectivo,
 							aliados_merkas_facturas.aliado_merkas_factura_pago_tarjeta,
-							
+							aliados_merkas_facturas.aliado_merkas_factura_pago_merkash,
 							usuarios.usuario_nombre_completo,  
 							usuarios.usuario_estado,
 							usuarios.usuario_telefono,
