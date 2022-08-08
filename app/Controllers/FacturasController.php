@@ -92,8 +92,10 @@ class FacturasController
 	{
 
 		$getFindById = $this->aliadosMerkasFactura->selectRaw(
-							"aliados_merkas_facturas.aliado_merkas_factura_id , 
+						   "aliados_merkas_facturas.aliado_merkas_factura_id , 
 							aliados_merkas_facturas.usuario_id,
+							aliados_merkas_facturas.aliado_merkas_factura_estado,
+							aliados_merkas_facturas.aliado_merkas_factura_fecha_registro,
 							usuarios.usuario_nombre_completo,
 							usuarios.usuario_puntos,
 							usuarios.usuario_merkash,
