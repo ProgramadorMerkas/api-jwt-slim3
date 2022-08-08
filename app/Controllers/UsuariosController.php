@@ -62,14 +62,17 @@ class UsuariosController
             usuarios.usuario_nombre_completo as hijo_nombre,
             usuarios.usuario_puntos as hijo_puntos,
             usuarios.usuario_merkash as hijo_merkash,
+            usuarios.usuario_ruta_img as hijo_img,
             padre.usuario_id as padre_id,
             padre.usuario_nombre_completo as padre_nombre,
             padre.usuario_puntos as padre_puntos,
             padre.usuario_merkash as padre_merkash,
+            padre.usuario_ruta_img as padre_img,
             abuelo.usuario_id as abuelo_id,
             abuelo.usuario_nombre_completo as abuelo_nombre,
             abuelo.usuario_puntos as abuelo_puntos,
-            abuelo.usuario_merkash as abuelo_merkash
+            abuelo.usuario_merkash as abuelo_merkash ,
+            abuelo.usuario_ruta_img as abuelo_img
             ")->leftjoin("usuarios as padre" , "padre.usuario_id" , "=" , "usuarios.usuario_id_padre")
                 ->leftjoin("usuarios as abuelo" , "abuelo.usuario_id" , "=" , "padre.usuario_id_padre")
         ->where(["usuarios.usuario_id" =>  $id])->get();
