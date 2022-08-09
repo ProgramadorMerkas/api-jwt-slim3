@@ -25,6 +25,7 @@ $app->group("/usuarios" , function() use ($app){
 
 $app->group("/facturas" , function() use ($app){
     $app->get("/findById/{id}" , "FacturasController:findById");
+    $app->patch("/anularFactura/{id}" , "FacturasController:anularFactura");
 });
  
  

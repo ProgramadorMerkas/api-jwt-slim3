@@ -25,7 +25,8 @@ class AliadosMerkasFacturas extends Model
         "aliado_merkas_factura_total_merkas",
         "metas_facturacion_merkas_id",
         "aliado_merkas_factura_pago_merkas",
-        "aliado_merkas_factura_pago_bonificacion_merkash"
+        "aliado_merkas_factura_pago_bonificacion_merkash",
+        "updated_at"
 
 
     ];

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
  
 use App\Models\AliadosMerkasFacturas;
+use App\Models\FacturasAnuladasLog;
 use App\Requests\CustomRequestHandler;
 use App\Response\CustomResponse;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -28,63 +29,14 @@ class FacturasController
 
 		$this->aliadosMerkasFactura = new AliadosMerkasFacturas();
 
+		$this->facturasAnuladasLog = new FacturasAnuladasLog();
+
 		$this->validator = new Validator();
 
 		$this->usuario = new UsuariosController();
 	}
 
-	#GET aliado_merkas_factura_id 
-	public function anularFactura(Request $request , Response  $response , $id)
-	{
-		
-		#consultamos los datos de la factura mas el id_usuario
-		$this->aliadosMerkasFactura->selectRaw(
-			"aliado_merkas_factura_id , 
-			aliado_merkas_factura_estado , 
-			aliado_merkas_factura_pago_bonificacion_merkash , 
-			aliado_merkas_factura_pago_merkash,
-			usuario_id,
-			aliado_merkas_factura_puntos_repartidos
-			"
-		)->where(["aliado_merkas_factura_id" => $id])->get();
-		#asignar variables
-		foreach($aliadosMerkasFactura as $item)
-		{
-			$id_hijo 				=  $item->usuario_id;
-
-			$estado 				= $item->aliado_merkas_factura_estado;
-
-			$bonificacion_merkash 	= $item->aliado_merkas_factura_pago_bonificacion_merkash;
-
-			$pagos_merkash 			= $item->aliado_merkas_factura_pago_merkash;
-
-			$puntos_repartidos 		= $item->aliado_merkas_factura_puntos_repartidos;
-
-		}
-		if($estado == 0)
-		{
-			$responseMessage = "recibo ya se encuentra anulado";
-
-			return $this->customeResponse->is400Response($response , $responseMessage);
-		}
-		#traemos hijo, padre, abuelo
-		$getHijoPAdreAbuelo = $this->usuario->abueloPadreHijoFindById($id_hijo);
-		foreach($getHijoPAdreAbuelo  as $key)
-		{
-			
-			$hijo_merkash 	= $key->hijo_merkash;
-			$padre_id  		= $key->padre_id;
-			$padre_puntos 	= $key->padre_puntos;
-			$padre_merkash 	= $key->padre_merkash;
-		}
-
-		if($bonificacion_merkash == 0)
-		{
-			
-		}
-		
-	}
-
+	 
 	/**
 	 * ENDPOINT GET buscar factura por id
 	 * */
@@ -100,6 +52,10 @@ class FacturasController
 							aliados_merkas_facturas.aliado_merkas_factura_pago_efectivo,
 							aliados_merkas_facturas.aliado_merkas_factura_pago_tarjeta,
 							aliados_merkas_facturas.aliado_merkas_factura_pago_merkash,
+							aliados_merkas_facturas.aliado_merkas_factura_total_merkas,
+							aliados_merkas_facturas.aliado_merkas_factura_total_con_iva,
+							aliados_merkas_facturas.aliado_merkas_factura_total_sin_iva,
+							aliados_merkas_facturas.aliado_merkas_factura_numero,							
 							usuarios.usuario_nombre_completo,  
 							usuarios.usuario_estado,
 							usuarios.usuario_telefono,
@@ -121,6 +77,61 @@ class FacturasController
 		$this->customResponse->is200Response($response , $getFindById);
 	}
 
+	/*
+	*ENDPOINT PATCH update
+	*/
+	public function anularFactura(Request $request , Response $response , $id)
+	{
+		$this->validator->validate($request , [ 
+        "aliado_merkas_factura_id" => v::notEmpty(),
+        "tipo" => v::notEmpty() , 
+        "aliado_merkas_factura_total_merkas" => v::notEmpty() ,
+        "aliado_merkas_factura_puntos_repartidos" => v::notEmpty(),
+        "aliado_merkas_factura_total_con_iva" => v::notEmpty(),
+        "aliado_merkas_factura_total_sin_iva" => v::notEmpty(),
+        "aliado_merkas_factura_pago_efectivo" => v::notEmpty(),
+        "aliado_merkas_factura_numero" => v::notEmpty(),
+        "aliado_merkas_factura_pago_tarjeta" => v::notEmpty(),
+        "aliado_merkas_factura_pago_merkash" => v::notEmpty(),
+		]);
+
+		if($this->validator->failed())
+		{
+			$responseMessage = $this->validator->errors;
+
+			return $this->customeResponse->is400Response($response , $responseMessage);
+		}
+
+		$this->aliadosMerkasFactura->where(["aliado_merkas_factura_id" => $id])->update([
+		"aliado_merkas_factura_total_merkas" => 0 ,
+        "aliado_merkas_factura_puntos_repartidos" => 0,
+        "aliado_merkas_factura_total_con_iva" => 0,
+        "aliado_merkas_factura_total_sin_iva" => 0,
+        "aliado_merkas_factura_pago_efectivo" => 0,
+        "aliado_merkas_factura_numero" => 0,
+        "aliado_merkas_factura_pago_tarjeta" => 0,
+        "aliado_merkas_factura_pago_merkash" => 0,
+		]);
+		#Tipo => ["factura anulada" , "eliminando puntos abuelo" , "eliminando puntos padre" , "eliminando puntos hijo" , "devolviendo merkash hijo" , 
+		# ]
+		$this->facturasAnuladasLog->create($request , [
+		"aliado_merkas_factura_id" => CustomRequestHandler::getParam($request, "aliado_merkas_factura_id"),
+		"tipo" => CustomRequestHandler::getParam($request , "tipo"),
+		"factura_anulada_log_fecha" => date("Y-m-d"),
+		"aliado_merkas_factura_total_merkas" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_total_merkas") ,
+        "aliado_merkas_factura_puntos_repartidos" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_puntos_repartidos") ,
+        "aliado_merkas_factura_total_con_iva" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_total_con_iva") ,
+        "aliado_merkas_factura_total_sin_iva" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_total_sin_iva") ,
+        "aliado_merkas_factura_pago_efectivo" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_total_merkas") ,
+        "aliado_merkas_factura_numero" 		=>	CustomRequestHandler::getParam($request , "aliado_merkas_factura_numero") ,
+        "aliado_merkas_factura_pago_tarjeta" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_pago_tarjeta") ,
+        "aliado_merkas_factura_pago_merkash" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_pago_merkash") ,
+		]);
+
+		$responseMessage = "factura anulada";
+
+		$this->customResponse->is200Response($response , $responseMessage);
+	}
 	
 
  }
