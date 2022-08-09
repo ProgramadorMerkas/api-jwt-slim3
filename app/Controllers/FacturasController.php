@@ -99,7 +99,7 @@ class FacturasController
 		{
 			$responseMessage = $this->validator->errors;
 
-			return $this->customeResponse->is400Response($response , $responseMessage);
+			return $this->customResponse->is400Response($response , $responseMessage);
 		}
 
 		$this->aliadosMerkasFactura->where(["aliado_merkas_factura_id" => $id])->update([
