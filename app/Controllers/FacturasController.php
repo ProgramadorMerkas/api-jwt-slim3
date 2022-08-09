@@ -104,10 +104,11 @@ class FacturasController
         "aliado_merkas_factura_numero" => 0,
         "aliado_merkas_factura_pago_tarjeta" => 0,
         "aliado_merkas_factura_pago_merkash" => 0,
+        "aliado_merkas_factura_estado" => 0
 		]);
 		#Tipo => ["factura anulada" , "eliminando puntos abuelo" , "eliminando puntos padre" , "eliminando puntos hijo" , "devolviendo merkash hijo" , 
 		# ]
-		$this->facturasAnuladasLog->create($request , [
+		$this->facturasAnuladasLog->create([
 		"aliado_merkas_factura_id" => CustomRequestHandler::getParam($request, "aliado_merkas_factura_id"),
 		"tipo" => CustomRequestHandler::getParam($request , "tipo"),
 		"factura_anulada_log_fecha" => date("Y-m-d"),
