@@ -60,7 +60,7 @@ class FacturasLogController
 */
     public function findByFacturasId(Request $request , Response $response , $id)
     {
-        $getFindByFacturasId =  new $this->facturasAnuladasLog->where(["aliado_merkas_factura_id" => $id])->get();
+        $getFindByFacturasId =  $this->facturasAnuladasLog->where(["aliado_merkas_factura_id" => $id])->get();
 
         $this->customResponse->is200Response($response , $getFindByFacturasId);
     }
