@@ -85,14 +85,14 @@ class FacturasController
 		$this->validator->validate($request , [ 
         "aliado_merkas_factura_id" => v::notEmpty(),
         "tipo" => v::notEmpty() , 
-        "aliado_merkas_factura_total_merkas" => v::notEmpty() ,
-        "aliado_merkas_factura_puntos_repartidos" => v::notEmpty(),
-        "aliado_merkas_factura_total_con_iva" => v::notEmpty(),
-        "aliado_merkas_factura_total_sin_iva" => v::notEmpty(),
-        "aliado_merkas_factura_pago_efectivo" => v::notEmpty(),
-        "aliado_merkas_factura_numero" => v::notEmpty(),
-        "aliado_merkas_factura_pago_tarjeta" => v::notEmpty(),
-        "aliado_merkas_factura_pago_merkash" => v::notEmpty(),
+        "aliado_merkas_factura_total_merkas" => v::exist() ,
+        "aliado_merkas_factura_puntos_repartidos" => v::exists(),
+        "aliado_merkas_factura_total_con_iva" => v::exists(),
+        "aliado_merkas_factura_total_sin_iva" => v::exists(),
+        "aliado_merkas_factura_pago_efectivo" => v::exists(),
+        "aliado_merkas_factura_numero" => v::exists(),
+        "aliado_merkas_factura_pago_tarjeta" => v::exists(),
+        "aliado_merkas_factura_pago_merkash" => v::exists(),
 		]);
 
 		if($this->validator->failed())
