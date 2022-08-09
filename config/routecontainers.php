@@ -29,6 +29,6 @@ return function($container)
     $container["FacturasLogController"] = function()
     {
       return new \App\Controllers\FacturasLogController;
-    }
+    };
 
 };
