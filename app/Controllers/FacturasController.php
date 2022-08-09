@@ -116,7 +116,7 @@ class FacturasController
         "aliado_merkas_factura_puntos_repartidos" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_puntos_repartidos") ,
         "aliado_merkas_factura_total_con_iva" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_total_con_iva") ,
         "aliado_merkas_factura_total_sin_iva" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_total_sin_iva") ,
-        "aliado_merkas_factura_pago_efectivo" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_total_merkas") ,
+        "aliado_merkas_factura_pago_efectivo" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_pago_efectivo") ,
         "aliado_merkas_factura_numero" 		=>	CustomRequestHandler::getParam($request , "aliado_merkas_factura_numero") ,
         "aliado_merkas_factura_pago_tarjeta" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_pago_tarjeta") ,
         "aliado_merkas_factura_pago_merkash" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_pago_merkash") ,

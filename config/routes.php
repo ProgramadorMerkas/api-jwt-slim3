@@ -27,5 +27,9 @@ $app->group("/facturas" , function() use ($app){
     $app->get("/findById/{id}" , "FacturasController:findById");
     $app->patch("/anularFactura/{id}" , "FacturasController:anularFactura");
 });
+
+$app->group("/facturasLog" , function() use ($app){
+    $app->get("/list/{id}" , "FacturasLogController:findByFacturasId");
+});
  
  
