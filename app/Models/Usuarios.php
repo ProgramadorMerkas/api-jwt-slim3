@@ -38,7 +38,8 @@ class Usuarios extends Model
         "usuario_token_merkash_fecha",
         "usuario_bienvenida",
         "usuario_latitud",
-        "usuario_longitud"
+        "usuario_longitud",
+        "updated_at"
     ];
 }
 
