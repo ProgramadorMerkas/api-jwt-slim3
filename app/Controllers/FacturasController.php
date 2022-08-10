@@ -120,6 +120,7 @@ class FacturasController
         "aliado_merkas_factura_numero" 		=>	CustomRequestHandler::getParam($request , "aliado_merkas_factura_numero") ,
         "aliado_merkas_factura_pago_tarjeta" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_pago_tarjeta") ,
         "aliado_merkas_factura_pago_merkash" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_pago_merkash") ,
+        "usuario_id" => CustomRequestHandler::getParam($request , "usuario_id"),
 		]);
 
 		$responseMessage = "factura anulada";

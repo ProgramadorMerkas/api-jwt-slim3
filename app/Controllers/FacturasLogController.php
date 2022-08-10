@@ -26,33 +26,32 @@ class FacturasLogController
 
         $this->facturasAnuladasLog = new FacturasAnuladasLog();
 
-
+        $this->validator = new Validator();
     }
 
     /*
-    *ENPOINT POST save info log
+    *
     */
     public function save(Request $request , Response $response)
     {
-        $this->validator->validate($request , [
-            "aliado_merkas_factura_id" => v::notEmpty(),
-            "factura_anulada_log_puntos" => v::notEmpty(),
-            "factura_anulada_log_merkash" => v::notEmpty(),
-            "usuario_id" => v::notEmpty(),
-            "tipo" => v::notEmpty(),
-            "factura_anulada_log_fecha" => date("Y-m-d")
+        
+
+        $this->facturasAnuladasLog->create([
+        "aliado_merkas_factura_id" => CustomRequestHandler::getParam($request, "aliado_merkas_factura_id"),
+        "tipo" => CustomRequestHandler::getParam($request , "tipo"),
+        "factura_anulada_log_fecha" => date("Y-m-d"),
+        "aliado_merkas_factura_total_merkas" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_total_merkas") ,
+        "aliado_merkas_factura_puntos_repartidos" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_puntos_repartidos") ,
+        "aliado_merkas_factura_total_con_iva" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_total_con_iva") ,
+        "aliado_merkas_factura_total_sin_iva" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_total_sin_iva") ,
+        "aliado_merkas_factura_pago_efectivo" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_pago_efectivo") ,
+        "aliado_merkas_factura_numero"      =>  CustomRequestHandler::getParam($request , "aliado_merkas_factura_numero") ,
+        "aliado_merkas_factura_pago_tarjeta" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_pago_tarjeta") ,
+        "aliado_merkas_factura_pago_merkash" => CustomRequestHandler::getParam($request , "aliado_merkas_factura_pago_merkash") ,
+        "usuario_id" => CustomRequestHandler::getParam($request , "usuario_id"),
         ]);
 
-        if($this->validator->failed())
-        {
-            $responseMessage = $this->validator->errors;
-
-            return $this->customeResponse->is400Response($response , $responseMessage);
-        }
-
-        $responseMessage = "creado";
-
-        $this->customResponse->is200Response($response , $responseMessage);
+         return true;
     }
 
 /*

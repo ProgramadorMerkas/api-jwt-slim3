@@ -28,6 +28,8 @@ class UsuariosController
         $this->usuario = new Usuarios();
 
         $this->validator = new Validator();
+
+        $this->facturasAnuladasLogController = new FacturasLogController();
     }
 
     /**
@@ -80,6 +82,42 @@ class UsuariosController
          $this->customResponse->is200Response($response , $getAbueloPadreHijoFindById);
 
     }
+
+    /*
+    *PATCH update merkash usuario
+    */
+    public function updateMerkashUsuario(Request $request , Response $response , $id)
+    {
+        $this->validator->validate($request , [
+            "usuario_merkash" => v::notEmpty()
+        ]);
+
+        if($this->validator->failed())
+        {
+            $responseMessage = $this->validator->errors;
+
+            return $this->customResponse->is400Response($response , $responseMessage);
+        }
+
+        $setFacturaAnuladaLog = $this->facturasAnuladasLogController->save($request , $response );
+
+        if (!$setFacturaAnuladaLog) {
+            
+            $responseMessage = "error creando log";
+
+            return $this->customResponse->is400Response($response , $responseMessage);
+        }
+        #enviamos los nuevos merkash
+        $this->usuario->where(["usuario_id" => $id])->update([
+            "usuario_merkash" => CustomRequestHandler::getParam($request , "usuario_merkash"),
+        ]);
+
+        $responseMessage = "merkash Actualizado";
+
+        $this->customResponse->is200Response($response , $responseMessage);
+    }
+
+
 }
 
 
