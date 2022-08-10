@@ -11,9 +11,7 @@ class FacturasAnuladasLog extends  Model
     
     protected $fillable = [ 
         "factura_anulada_log_id",
-        "aliado_merkas_factura_id",
-        "factura_anulada_log_puntos",
-        "factura_anulada_log_merkash",
+        "aliado_merkas_factura_id", 
         "usuario_id",
         "tipo",
         "factura_anulada_log_fecha",

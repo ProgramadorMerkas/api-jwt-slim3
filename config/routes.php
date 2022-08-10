@@ -21,6 +21,7 @@ $app->group("/reportes" , function() use ($app){
 $app->group("/usuarios" , function() use ($app){
     $app->get("/list" , "UsuariosController:list");
     $app->get("/abueloPadreHijoFindById/{id}" , "UsuariosController:abueloPadreHijoFindById");
+    $app->patch("/updateMerkashUsuario/{id}" , "UsuariosController:updateMerkashUsuario");
 });
 
 $app->group("/facturas" , function() use ($app){
