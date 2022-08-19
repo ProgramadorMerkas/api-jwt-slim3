@@ -22,6 +22,7 @@ $app->group("/usuarios" , function() use ($app){
     $app->get("/list" , "UsuariosController:list");
     $app->get("/abueloPadreHijoFindById/{id}" , "UsuariosController:abueloPadreHijoFindById");
     $app->patch("/updateMerkashUsuario/{id}" , "UsuariosController:updateMerkashUsuario");
+    $app->patch("/resetearPassword/{id}" , "UsuariosController:resetearPassword");
 });
 
 $app->group("/facturas" , function() use ($app){
@@ -32,5 +33,7 @@ $app->group("/facturas" , function() use ($app){
 $app->group("/facturasLog" , function() use ($app){
     $app->get("/list/{id}" , "FacturasLogController:findByFacturasId");
 });
+
+
  
  

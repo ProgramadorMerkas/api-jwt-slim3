@@ -117,6 +117,20 @@ class UsuariosController
         $this->customResponse->is200Response($response , $responseMessage);
     }
 
+    /*
+    *PATCH updated contraseña
+    */
+    public function resetearPassword(Request $request , Response $response , $id)
+    {
+         $passwordDefault = md5("Merkas2022");
+
+         $this->usuario->where(["usuario_id" => $id])->update(["usuario_contrasena" => $passwordDefault]);
+
+         $responseMessage = "actualizado";
+
+         $this->customResponse->is200Response($response , $responseMessage);
+    }
+
 
 }
 
