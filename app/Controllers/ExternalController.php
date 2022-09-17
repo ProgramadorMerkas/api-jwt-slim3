@@ -56,9 +56,11 @@ class ExternalController
 			return $this->customeResponse->is400Response($response , $responseMessage);
 		}
 
+		$correo = CustomRequestHandler::getParam($request , "correo");
 
-		$getFindReferido = $this->usuario->orWhere('usuario_telefono' , 'like' , "%CustomRequestHandler::getParam($request , 'celular')%")
-										->orWhere('usuario_correo' , 'like' , "%CustomRequestHandler::getParam($request , 'correo')%")
+		$celular  = CustomRequestHandler::getParam($request , "celular");
+		$getFindReferido = $this->usuario->orWhere('usuario_telefono' , 'like' , "%$celular%")
+										->orWhere('usuario_correo' , 'like' , "%$correo%")
 										->get();
 
 		$this->customResponse->is200Response($response , $getFindReferido);
@@ -67,6 +69,10 @@ class ExternalController
 	public function validateToken($token)
 	{
 		if($token == "46fa959d22ac949e35bfeeaed5ff7b77")
+		{
+			return true;
+		}
+		return false;
 	}
 
 }
