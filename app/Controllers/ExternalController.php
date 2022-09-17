@@ -39,7 +39,7 @@ class ExternalController
 	{
 		$this->validator->validate($request , [
 			"token" => v::notEmpty(),
-			"celular" => v:notEmpty(),
+			"celular" => v::notEmpty(),
 		]);
 
 		if ($this->validator->failed()) {
@@ -68,7 +68,7 @@ class ExternalController
 	{
 		$this->validator->validate($request , [
 			"token" => v::notEmpty(),
-			"correo" => v:notEmpty(),
+			"correo" => v::notEmpty(),
 		]);
 
 		if ($this->validator->failed()) {
