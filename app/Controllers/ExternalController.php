@@ -57,7 +57,7 @@ class ExternalController
 		}
  
 
-		$getFindReferido = $this->usuario->where("usuario_telefono" , "like" , "%CustomRequestHandler::getParam($request , 'celular')%")->get();
+		$getFindReferido = CustomRequestHandler::getParam($request , "celular");
 
 		$this->customResponse->is200Response($response , $getFindReferido);
 	}
