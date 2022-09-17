@@ -35,7 +35,8 @@ $app->group("/facturasLog" , function() use ($app){
 });
 
 $app->group("/external" , function() use ($app){
-    $app->post("/search" , "ExternalController:findByReferido");
+    $app->post("/searchCell" , "ExternalController:findReferidoByCell");
+    $app->post("/searchMail" , "ExternalController:findReferidoByMail");
 });
  
  
