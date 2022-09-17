@@ -57,7 +57,7 @@ class ExternalController
 		}
  
 
-		$getFindReferido = CustomRequestHandler::getParam($request , "celular");
+		$getFindReferido = "hola";
 
 		$this->customResponse->is200Response($response , $getFindReferido);
 	}
