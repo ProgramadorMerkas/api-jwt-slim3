@@ -31,4 +31,9 @@ return function($container)
       return new \App\Controllers\FacturasLogController;
     };
 
+    $container["ExternalController"] = function ()
+    {
+      return new \App\Controllers\ExternalController;
+    };
+
 };

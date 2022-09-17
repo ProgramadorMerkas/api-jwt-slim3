@@ -34,6 +34,8 @@ $app->group("/facturasLog" , function() use ($app){
     $app->get("/list/{id}" , "FacturasLogController:findByFacturasId");
 });
 
-
+$app->group("/external" , function() use ($app){
+    $app->post("/search" , "ExternalController:findByReferido");
+});
  
  
