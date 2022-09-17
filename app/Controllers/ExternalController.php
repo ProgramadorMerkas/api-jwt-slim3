@@ -58,7 +58,7 @@ class ExternalController
 		$correo = CustomRequestHandler::getParam($request , "correo");
 
 		$celular  = CustomRequestHandler::getParam($request , "celular");
-		$getFindReferido = $this->usuario->orWhere('usuario_telefono' , 'like' , "%$celular%")
+		$getFindReferido = $this->usuario->where('usuario_telefono' , 'like' , "%$celular%")
 										->orWhere('usuario_correo' , 'like' , "%$correo%")
 										->get();
 
