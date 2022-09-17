@@ -35,10 +35,40 @@ class ExternalController
 	/**
 	 * ENDPOINT POST findByReferido
 	 * */
-	public function findByReferido(Request $request , Response $response)
+	public function findReferidoByCell(Request $request , Response $response)
 	{
 		$this->validator->validate($request , [
-			"token" => v::notEmpty()
+			"token" => v::notEmpty(),
+			"celular" => v:notEmpty(),
+		]);
+
+		if ($this->validator->failed()) {
+
+			$responseMessage = $this->validator->errors;
+
+			return $this->customeResponse->is400Response($response , $responseMessage);
+		}
+
+		if($this->validateToken(CustomRequestHandler::getParam($request , "token")))
+		{
+			$responseMessage = "token no valido";
+
+			return $this->customeResponse->is400Response($response , $responseMessage);
+		}
+ 
+
+		$getFindReferido = $this->usuario->where(["usuario_telefono" => CustomRequestHandler::getParam($request , "celular")])->get();
+
+		$this->customResponse->is200Response($response , $getFindReferido);
+	}
+
+	/**
+	 * ENDPOINT POST findReferidoByMail*/
+	public function findReferidoByMail(Request $request , Response $response)
+	{
+		$this->validator->validate($request , [
+			"token" => v::notEmpty(),
+			"correo" => v:notEmpty(),
 		]);
 
 		if ($this->validator->failed()) {
@@ -55,12 +85,7 @@ class ExternalController
 			return $this->customeResponse->is400Response($response , $responseMessage);
 		}
 
-		$correo = CustomRequestHandler::getParam($request , "correo");
-
-		$celular  = CustomRequestHandler::getParam($request , "celular");
-		$getFindReferido = $this->usuario->where('usuario_telefono' , 'like' , "%$celular%")
-										->orWhere('usuario_correo' , 'like' , "%$correo%")
-										->get();
+		$getFindReferido = $this->usuario->where(["usuario_correo" => CustomRequestHandler::getParam($request , "correo")])->get();
 
 		$this->customResponse->is200Response($response , $getFindReferido);
 	}
