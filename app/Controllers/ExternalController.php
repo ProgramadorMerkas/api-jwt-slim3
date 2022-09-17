@@ -57,9 +57,9 @@ class ExternalController
 		}
  
 
-		$getFindReferido = "hola";
+		$getFindReferido = $this->usuario->where("usuario_telefono" , "like" , "%CustomRequestHandler::getParam($request , 'celular')%")->get();
 
-		$this->customResponse->is200Response($response , $getFindReferido);
+		$this->customeResponse->is200Response($response , $getFindReferido);
 	}
 
 	/**
@@ -87,7 +87,7 @@ class ExternalController
 
 		$getFindReferido = $this->usuario->where(["usuario_correo" => CustomRequestHandler::getParam($request , "correo")])->get();
 
-		$this->customResponse->is200Response($response , $getFindReferido);
+		$this->customeResponse->is200Response($response , $getFindReferido);
 	}
 
 	public function validateToken($token)
