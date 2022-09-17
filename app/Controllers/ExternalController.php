@@ -2,9 +2,8 @@
 
 namespace App\Controllers;
 
- 
-use App\Models\AliadosMerkasFacturas;
-use App\Models\FacturasAnuladasLog;
+  
+use App\Models\Usuarios;
 use App\Requests\CustomRequestHandler;
 use App\Response\CustomResponse;
 use Psr\Http\Message\ResponseInterface as Response;
