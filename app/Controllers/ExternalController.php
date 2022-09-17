@@ -49,7 +49,7 @@ class ExternalController
 			return $this->customeResponse->is400Response($response , $responseMessage);
 		}
 
-		if($this->validateToken(CustomRequestHandler::getParam($request , "token")))
+		if(!$this->validateToken(CustomRequestHandler::getParam($request , "token")))
 		{
 			$responseMessage = "token no valido";
 
@@ -57,7 +57,7 @@ class ExternalController
 		}
  
 
-		$getFindReferido = $this->usuario->where(["usuario_telefono" => CustomRequestHandler::getParam($request , "celular")])->get();
+		$getFindReferido = $this->usuario->where("usuario_telefono" , "like" , "%CustomRequestHandler::getParam($request , 'celular')%")->get();
 
 		$this->customResponse->is200Response($response , $getFindReferido);
 	}
@@ -78,7 +78,7 @@ class ExternalController
 			return $this->customeResponse->is400Response($response , $responseMessage);
 		}
 
-		if($this->validateToken(CustomRequestHandler::getParam($request , "token")))
+		if(!$this->validateToken(CustomRequestHandler::getParam($request , "token")))
 		{
 			$responseMessage = "token no valido";
 
