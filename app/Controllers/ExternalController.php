@@ -16,11 +16,11 @@ use App\Validation\Validator;
 class ExternalController
 {
 
-	protected usuario;
+	protected $usuario;
 
-	protected customeResponse;
+	protected $customeResponse;
 
-	protected validator;
+	protected $validator;
 
 	public function __construct()
 	{
