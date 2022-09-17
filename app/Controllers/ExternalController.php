@@ -55,9 +55,10 @@ class ExternalController
 
 			return $this->customeResponse->is400Response($response , $responseMessage);
 		}
- 
+ 		
+ 		$celular = CustomRequestHandler::getParam($request , "celular");
 
-		$getFindReferido = $this->usuario->where("usuario_telefono" , "like" , "%CustomRequestHandler::getParam($request , 'celular')%")->get();
+		$getFindReferido = $this->usuario->where("usuario_telefono" , "like" , "%$celular%")->get();
 
 		$this->customeResponse->is200Response($response , $getFindReferido);
 	}
