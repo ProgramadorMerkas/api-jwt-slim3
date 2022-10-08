@@ -7,7 +7,8 @@ $app->group("/auth",function() use ($app){
 
     $app->post("/login","AuthController:Login");
     $app->post("/register","AuthController:Register");
-    $app->get("/validate/{jwt}" , "AuthController:Validate");
+    //$app->get("/validate/{jwt}" , "AuthController:Validate");
+    $app->post("/validate" , "AuthController:validate");
 });
 
 $app->group("/reportes" , function() use ($app){
@@ -23,6 +24,8 @@ $app->group("/usuarios" , function() use ($app){
     $app->get("/abueloPadreHijoFindById/{id}" , "UsuariosController:abueloPadreHijoFindById");
     $app->patch("/updateMerkashUsuario/{id}" , "UsuariosController:updateMerkashUsuario");
     $app->patch("/resetearPassword/{id}" , "UsuariosController:resetearPassword");
+    $app->get("/findByCodigo/{id}" , "UsuariosController:findByCodigo");
+    $app->post("/findByRolAndIdPadre" , "UsuariosController:findByRolAndIdPadre");
 });
 
 $app->group("/facturas" , function() use ($app){
@@ -37,6 +40,13 @@ $app->group("/facturasLog" , function() use ($app){
 $app->group("/external" , function() use ($app){
     $app->post("/searchCell" , "ExternalController:findReferidoByCell");
     $app->post("/searchMail" , "ExternalController:findReferidoByMail");
+});
+
+
+$app->group("/uploads" , function() use($app){
+    $app->post("/load" , "UploadsController:uploads");
+    $app->post("/findByCategoria" , "UploadsController:findByCategoria");
+    $app->post("/cargarDB" , "UploadsController:referidosCargue");
 });
  
  
