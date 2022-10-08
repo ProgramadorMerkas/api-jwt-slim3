@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * hannilsolutions
+ * sistemas@hannilsolutions.com
+ * 2022-09-30
+ */
 namespace App\Controllers;
 
  
@@ -15,21 +19,23 @@ use App\Validation\Validator;
 
 class UsuariosController
 {   
-    protected $customResponse;
-
     protected $usuario;
 
     protected $validator;
 
+    protected $customResponse;
+
+    protected $headersToken;
+
     public function __construct()
     {
+        $this->usuario = new Usuario();
+
         $this->customResponse = new CustomResponse();
 
-        $this->usuario = new Usuarios();
+        $this->validator =  new Validator();
 
-        $this->validator = new Validator();
-
-        $this->facturasAnuladasLogController = new FacturasLogController();
+        $this->headersToken = new RequestHeadersController();
     }
 
     /**
@@ -129,6 +135,74 @@ class UsuariosController
          $responseMessage = "actualizado";
 
          $this->customResponse->is200Response($response , $responseMessage);
+    }
+
+    /** 
+     * 
+     * 
+     * 
+     * 
+    */
+    /**
+     * ENDPOINT GET list
+     * */
+    public function findByCodigo(Request $request , Response $response , $id)
+    {
+         /**
+         * validation de del api-key
+         */ 
+        $this->headersToken->apitoken($request);
+
+        if($this->headersToken->failed())
+        {
+            $responseMenssage = $this->headersToken->errors;
+
+            return $this->customResponse->is400Response($response , $responseMenssage);
+        }
+ 
+
+        $getFindByCodigo = $this->usuario->where(["usuario_id_padre" => $id])->get();
+
+       $this->customResponse->is200Response($response , $getFindByCodigo);
+    }
+
+    /*
+    *ENDPOINT POST buscar por rol e id_padre
+    **/
+    public function findByRolAndIdPadre(Request $request , Response $response)
+    {
+         /**
+         * validation de del api-key
+         */ 
+       $this->headersToken->apitoken($request);
+
+        if($this->headersToken->failed())
+        {
+            $responseMenssage = $this->headersToken->errors;
+
+            return $this->customResponse->is400Response($response , $responseMenssage);
+        }
+
+        $this->validator->validate($request , [
+            "id_padre" => v::notEmpty(),
+            "rol"      => v::notEmpty()
+        ]);
+
+       if ($this->validator->failed()) {
+            
+            $responseMenssage = $this->validator->errors;
+
+            return $this->customResponse->is400Response($response , $responseMenssage);
+        }
+
+        $id_padre = CustomRequestHandler::getParam($request , "id_padre");
+
+        $rol = CustomRequestHandler::getParam($request , "rol");
+
+       $getCount = $this->usuario->where("usuario_id_padre" , "=" , $id_padre)->where("usuario_rol_principal" , "=" , $rol)->count();
+
+        $this->customResponse->is200Response($response , $getCount);
+ 
     }
 
 

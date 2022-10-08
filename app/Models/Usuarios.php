@@ -1,11 +1,17 @@
 <?php
-
+/**
+ * hannilsolutions
+ * sistemas@hannilsolutions.com
+ * 2022-09-23
+ */
 namespace App\Models;
 
 use \Illuminate\Database\Eloquent\Model;
 
-class Usuarios extends Model
+class Usuario extends Model
 {
+    public $timestamps = false;
+    
     protected $table = "usuarios";
 
     protected $fillable = [
