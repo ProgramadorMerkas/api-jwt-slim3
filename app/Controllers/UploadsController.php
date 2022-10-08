@@ -8,7 +8,7 @@ namespace App\Controllers;
 
 use App\Models\Uploads;
 use App\Models\Settings;
-use App\Models\Usuario;
+use App\Models\Usuarios;
 use App\Requests\CustomRequestHandler;
 use App\Response\CustomResponse;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -50,7 +50,7 @@ class UploadsController
 
         $this->headersToken = new RequestHeadersController();
 
-        $this->usuario = new Usuario();
+        $this->usuario = new Usuarios();
 
         $this->errors = [];
 
