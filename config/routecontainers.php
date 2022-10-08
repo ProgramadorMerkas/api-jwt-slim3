@@ -1,4 +1,9 @@
 <?php
+/**
+ * Hannilsolutions
+ * sistemas@hannilsolutions.com
+ * 2022-09-23
+ */
 return function($container)
 {
     $container["GuestEntryController"] = function()
@@ -34,6 +39,11 @@ return function($container)
     $container["ExternalController"] = function ()
     {
       return new \App\Controllers\ExternalController;
+    };
+
+    $container["UploadsController"] = function()
+    {
+      return new \App\Controllers\UploadsController;
     };
 
 };

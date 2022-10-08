@@ -6,7 +6,7 @@
  */
 namespace App\Controllers;
 
-use App\Models\Usuario;
+use App\Models\Usuarios;
 use App\Requests\CustomRequestHandler;
 use App\Response\CustomResponse;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -26,7 +26,7 @@ class AuthController
     {
         $this->customResponse = new CustomResponse;
 
-        $this->user = new Usuario();
+        $this->user = new Usuarios();
 
         $this->validator = new Validator;
 
@@ -67,7 +67,7 @@ class AuthController
             return $this->customResponse->is400Response($response , $responseMenssage);
         }
         /**en caso de existir generar el jwt */
-        $responseMenssage = GenerateJWTController::generateToken($email);
+        $responseMenssage = GenerateTokenController::generateToken($email);
 
         $this->customResponse->is200Response($response , $responseMenssage);
     }
