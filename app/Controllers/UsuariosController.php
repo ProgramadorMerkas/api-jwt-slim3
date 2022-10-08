@@ -29,7 +29,7 @@ class UsuariosController
 
     public function __construct()
     {
-        $this->usuario = new Usuario();
+        $this->usuario = new Usuarios();
 
         $this->customResponse = new CustomResponse();
 
