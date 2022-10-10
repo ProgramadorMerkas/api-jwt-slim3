@@ -27,7 +27,7 @@ return function ($app)
 
     $app->add(function ($req,$res,$next){
        $response = $next($req,$res);
-      return $response->withHeader("Access-Control-Allow-Origin","https://merkas.co/")
+      return $response->withHeader("Access-Control-Allow-Origin","https://merkas.co")
            ->withHeader("Access-Control-Allow-Headers","X-Requested-With,Content-Type,Accept,Origin,Authorization,api-key")
            ->withHeader("Access-Control-Allow-Methods","GET,POST,PUT,PATCH,OPTIONS,DELETE");
            //->withHeader("Access-Control-Allow-Credentials","true");
