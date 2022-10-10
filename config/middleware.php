@@ -27,10 +27,9 @@ return function ($app)
 
     $app->add(function ($req,$res,$next){
        $response = $next($req,$res);
-      return $response->withHeader("Access-Control-Allow-Origin","*")
+      return $response->withHeader("Access-Control-Allow-Origin","http://localhost:4200")
             ->withHeader("Access-Control-Allow-Methods","GET,POST,PUT,PATCH,OPTIONS,DELETE")
-           ->withHeader("Access-Control-Allow-Headers","X-Requested-With,Content-Type,Accept,Origin,Authorization,api-key");
-           
-           //->withHeader("Access-Control-Allow-Credentials","true");
+           ->withHeader("Access-Control-Allow-Headers","X-Requested-With,Content-Type,Accept,Origin,Authorization,api-key")
+           ->withHeader("Access-Control-Allow-Credentials","true");
     });
 };
