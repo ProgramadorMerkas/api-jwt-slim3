@@ -1,18 +1,17 @@
 <?php 
 
-use Monolog\Logger;
+/*use Monolog\Logger;
 use Monolog\Handler\RotatingFileHandler;
 
 $logger = new Logger("slim");
 $rotating = new RotatingFileHandler(__DIR__ . "/logs/slim.log", 0, Logger::DEBUG);
-$logger->pushHandler($rotating);
+$logger->pushHandler($rotating);*/
 
 return function ($app)
 {
     $app->add(new Tuupola\Middleware\JwtAuthentication([
         "ignore"=>["/auth/login" , "/external/searchCell" ,"/external/searchMail" , "/auth/validate"],
         "secret"=> JWT_SECRET_KEY,
-        "logger"=> $logger,
         "error"=>function ($response,$arguments)
         {
             $data["success"]= false;
@@ -25,11 +24,11 @@ return function ($app)
     ]));
 
 
-    /*$app->add(function ($req,$res,$next){
+    $app->add(function ($req,$res,$next){
        $response = $next($req,$res);
       return $response->withHeader("Access-Control-Allow-Origin","https://merkas.co")
             ->withHeader("Access-Control-Allow-Methods","GET,POST,PUT,PATCH,OPTIONS,DELETE")
            ->withHeader("Access-Control-Allow-Headers","X-Requested-With,Content-Type,Accept,Origin,Authorization,api-key")
            ->withHeader("Access-Control-Allow-Credentials","true");
-    });*/
+    });
 };
