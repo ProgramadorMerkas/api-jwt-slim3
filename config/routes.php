@@ -5,7 +5,7 @@
 
 $app->group("/auth",function() use ($app){
 
-    $app->post("/login","AuthController:Login");
+    $app->post("/login","AuthController:login");
     $app->post("/register","AuthController:Register");
     //$app->get("/validate/{jwt}" , "AuthController:Validate");
     $app->post("/validate" , "AuthController:validate");
